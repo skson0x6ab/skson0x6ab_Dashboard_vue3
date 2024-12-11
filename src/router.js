@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Layout from './layouts/Layout.vue'
 import Dashboard from './pages/Dashboard.vue'
-import Genshin from './pages/releaseNote/Genshin.vue'
-import StarRail from './pages/releaseNote/StarRail.vue'
-import Maplestory from './pages/releaseNote/Maplestory.vue'
-import FF14 from './pages/releaseNote/FF14.vue'
+import Genshin from './pages/releasenote/Genshin.vue'
+import StarRail from './pages/releasenote/StarRail.vue'
+import Maplestory from './pages/releasenote/Maplestory.vue'
+import FF14 from './pages/releasenote/FF14.vue'
 
 const routerHistory = createWebHistory()
 
@@ -13,7 +13,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/Dashboard',
       component: Layout,
       children: [
         {
