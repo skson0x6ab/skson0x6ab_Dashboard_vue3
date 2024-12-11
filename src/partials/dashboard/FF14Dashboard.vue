@@ -4,11 +4,14 @@
       <h2 class="font-semibold text-gray-800 dark:text-gray-100">Final Fantasy XIV</h2>
     </header>
     <div class="p-3">
+      <!-- 로딩 중 상태 -->
+      <div v-if="loading" class="text-center text-gray-600">로딩 중...</div>
+      <!-- 에러 메시지 -->
+      <div v-if="error" class="text-center text-red-600">{{ error }}</div>
 
-      <!-- Table -->
-      <div class="overflow-x-auto">
+      <!-- 테이블 -->
+      <div class="overflow-x-auto" v-if="!loading && jsonData">
         <table class="table-auto w-full dark:text-gray-300">
-          <!-- Table header -->
           <thead class="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 rounded-sm">
             <tr>
               <th class="p-2">
@@ -19,72 +22,54 @@
               </th>
             </tr>
           </thead>
-          <!-- Table body -->
           <tbody class="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
-            <!-- Row -->
-             <tr v-for="(item, index) in jsonData" :key="index">
-                    <td class="p-2">
-                      <div class="flex items-center">
-                        <div class="text-gray-800 dark:text-gray-100">{{ item.Text }}</div>
-                      </div>
-                    </td>
-                    <td class="p-2">
-                      <div class="text-center">{{ item.Date }}</div>
-                    </td>
-                  </tr>
+            <tr v-for="(item, index) in jsonData" :key="index">
+              <td class="p-2">
+                <div class="flex items-center">
+                  <div class="text-gray-800 dark:text-gray-100">{{ item.Text }}</div>
+                </div>
+              </td>
+              <td class="p-2">
+                <div class="text-center">{{ item.Date }}</div>
+              </td>
+            </tr>
           </tbody>
         </table>
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import githubApi from '/src/services/githubApi';
+import { useFF14Store } from '/src/stores/FF14Store';
 
 export default {
   name: 'FF14Dashboard',
-  data() {
-    return {
-      jsonData: null,
-    };
+  computed: {
+    jsonData() {
+      return this.FF14Store.jsonData;
+    },
+    loading() {
+      return this.FF14Store.loading;
+    },
+    error() {
+      return this.FF14Store.error;
+    },
   },
   methods: {
     async fetchJsonData() {
-      try {
-        // 레포지토리 소유자와 이름, 파일 경로를 설정합니다.
-        const owner = 'skson0x6ab';
-        const repo = 'DataRepository';
-        const filePath = 'FF14.json';
-
-        // GitHub API를 통해 파일의 내용을 가져옵니다.
-        const response = await githubApi.get(
-          `/repos/${owner}/${repo}/contents/${filePath}`
-        );
-
-        // Base64 문자열을 UTF-8로 디코딩
-        const base64Content = response.data.content;
-        const binaryString = atob(base64Content);
-        const binaryLength = binaryString.length;
-        const bytes = new Uint8Array(binaryLength);
-
-        for (let i = 0; i < binaryLength; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
-        }
-
-        const textDecoder = new TextDecoder('utf-8');
-        const decodedContent = textDecoder.decode(bytes);
-
-        // JSON으로 파싱
-        this.jsonData = JSON.parse(decodedContent);
-      } catch (error) {
-        console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
-      }
+      await this.FF14Store.fetchJsonData();
     },
   },
   created() {
     this.fetchJsonData();
+  },
+  setup() {
+    const FF14Store = useFF14Store();
+
+    return {
+      FF14Store,
+    };
   },
 };
 </script>
