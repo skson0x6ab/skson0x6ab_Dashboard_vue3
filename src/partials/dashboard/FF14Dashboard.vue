@@ -18,7 +18,7 @@
                 <div class="font-semibold text-left">소식</div>
               </th>
               <th class="p-2">
-                <div class="font-semibold text-center">날짜</div>
+                <div class="font-semibold text-left">날짜</div>
               </th>
             </tr>
           </thead>
@@ -30,7 +30,7 @@
                 </div>
               </td>
               <td class="p-2">
-                <div class="text-center">{{ item.Date }}</div>
+                <div class="text-left">{{ item.Date }}</div>
               </td>
             </tr>
           </tbody>

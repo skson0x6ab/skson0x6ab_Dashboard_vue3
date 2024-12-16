@@ -39,29 +39,25 @@
 </template>
 
 <script>
-import { useMonitorStore } from '/src/stores/MonitorStore'; // Pinia store import
+import { useMonitorStore } from '/src/stores/MonitorStore';
 
 export default {
   name: 'MonitorDashboard',
   computed: {
-    // Pinia store에서 데이터 가져오기
     jsonData() {
       return this.MonitorStore.jsonData;
     },
   },
   methods: {
-    // Pinia store의 액션 호출
     async fetchJsonData() {
       await this.MonitorStore.fetchJsonData();
     },
   },
   created() {
-    // 컴포넌트가 생성될 때 데이터를 가져옵니다.
     this.fetchJsonData();
   },
   setup() {
-    const MonitorStore = useMonitorStore(); // Pinia store 인스턴스 가져오기
-
+    const MonitorStore = useMonitorStore();
     return {
       MonitorStore,
     };

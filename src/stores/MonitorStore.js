@@ -31,9 +31,7 @@ export const useMonitorStore = defineStore('Monitor', {
         ];
 
         for (let filePath of filePaths) {
-          const response = await fetch(
-            `https://api.github.com/repos/${owner}/${repo}/commits?path=${filePath}`
-          );
+          const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?path=${filePath}`);
           const data = await response.json();
 
           const commitDate = new Date(data[0].commit.author.date);

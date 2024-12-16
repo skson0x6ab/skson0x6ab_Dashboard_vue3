@@ -5,6 +5,9 @@ import Genshin from './pages/releasenote/Genshin.vue'
 import StarRail from './pages/releasenote/StarRail.vue'
 import Maplestory from './pages/releasenote/Maplestory.vue'
 import FF14 from './pages/releasenote/FF14.vue'
+import GenshinCodeRedeem from './pages/coderedeem/GenshinCodeRedeem.vue'
+import StarRailCodeRedeem from './pages/coderedeem/StarRailCodeRedeem.vue'
+import ZenlessCodeRedeem from './pages/coderedeem/ZenlessCodeRedeem.vue'
 
 const routerHistory = createWebHistory()
 
@@ -22,19 +25,31 @@ const router = createRouter({
         },
         {
             path: '/Genshin',
-             component: Genshin
+            component: Genshin
         },
         {
             path: '/StarRail',
-             component: StarRail
+            component: StarRail
         },
         {
             path: '/Maplestory',
-             component: Maplestory
+            component: Maplestory
         },
         {
             path: '/FF14',
-             component: FF14
+            component: FF14
+        },
+        {
+            path: '/GenshinCodeRedeem',
+            component: GenshinCodeRedeem
+        },
+        {
+            path: '/StarRailCodeRedeem',
+            component: StarRailCodeRedeem
+        },
+        {
+            path: '/ZenlessCodeRedeem',
+            component: ZenlessCodeRedeem
         },
       ]
     },

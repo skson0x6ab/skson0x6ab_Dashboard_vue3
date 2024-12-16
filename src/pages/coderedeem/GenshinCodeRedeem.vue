@@ -1,11 +1,11 @@
 <script>
 import { ref } from 'vue';
-import GenshinDashboard from '/src/partials/dashboard/GenshinDashboard.vue';
+import GenshinCodeRedeemDashboard from '/src/partials/dashboard/GenshinCodeRedeemDashboard.vue';
 
 export default {
-  name: 'GenshinPage',
+  name: 'GenshinCodeRedeemPage',
   components: {
-    GenshinDashboard,
+    GenshinCodeRedeemDashboard,
   },
   setup() {
     const sidebarOpen = ref(false);
@@ -19,7 +19,7 @@ export default {
 
 <template>
   <div class="grid">
-    <GenshinDashboard />
+    <GenshinCodeRedeemDashboard />
   </div>
 </template>
 
