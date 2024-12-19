@@ -21,17 +21,17 @@ VitePWA({
         display: 'standalone', // 독립 실행형
         icons: [
           {
-            src: '/icon-192x192.png', // 192x192 아이콘 경로
+            src: '/icon59.png', // 192x192 아이콘 경로
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/icon-512x512.png', // 512x512 아이콘 경로
+            src: '/icon59.png', // 512x512 아이콘 경로
             sizes: '512x512',
             type: 'image/png',
           },
           {
-            src: '/icon-512x512.png', // 마스킹 지원 아이콘
+            src: '/icon59.png', // 마스킹 지원 아이콘
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable',
