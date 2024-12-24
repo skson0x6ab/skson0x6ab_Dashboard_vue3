@@ -8,6 +8,7 @@ import FF14 from './pages/releasenote/FF14.vue'
 import GenshinCodeRedeem from './pages/coderedeem/GenshinCodeRedeem.vue'
 import StarRailCodeRedeem from './pages/coderedeem/StarRailCodeRedeem.vue'
 import ZenlessCodeRedeem from './pages/coderedeem/ZenlessCodeRedeem.vue'
+import NexonAPI from './pages/NexonAPI/NexonAPI.vue'
 
 const routerHistory = createWebHistory()
 
@@ -50,6 +51,10 @@ const router = createRouter({
         {
             path: '/ZenlessCodeRedeem',
             component: ZenlessCodeRedeem
+        },
+        {
+            path: '/NexonAPI',
+            component: NexonAPI
         },
       ]
     },
