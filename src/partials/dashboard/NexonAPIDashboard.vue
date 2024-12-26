@@ -1,18 +1,20 @@
 <template>
 <!-- 테이블 1 -->
   <div class="bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-6 mx-4">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-1">
       <div
         v-for="(character, index) in characters"
         :key="character.ocid"
-        class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 min-w-[250px] flex flex-col cursor-pointer mb-6 mx-4 mt-4"
+        class="bg-white dark:bg-gray-700 shadow-lg rounded-xl p-4 min-w-[0px] flex flex-col cursor-pointer mb-1 mx-1 mt-1"
         @click="selectCharacter(character)"
       >
-        <header class="flex justify-between items-center mb-2">
-          <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ character.character_class }}</h2>
-        </header>
-        <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">
-          Level: {{ character.character_level }}
+<header class="flex justify-between items-center mb-2">
+  <!-- 이미지 불러오기 -->
+
+</header>
+        <div class="font-semibold text-gray-400  mb-1">
+        {{ character.character_level }} <br>
+          {{ character.character_class }}
         </div>
       </div>
     </div>

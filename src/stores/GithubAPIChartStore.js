@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import githubApi from '/src/services/githubApi';
 
-export const useNexonAPIMaplestoryStore = defineStore('NexonAPIMaplestory', {
+export const useGithubAPIChartStore = defineStore('GithubAPIChart', {
   state: () => ({
     jsonData: null, // 데이터 저장
     loading: false,  // 로딩 상태
@@ -16,7 +16,7 @@ export const useNexonAPIMaplestoryStore = defineStore('NexonAPIMaplestory', {
       try {
         const owner = 'skson0x6ab';
         const repo = 'skson0x6ab_InformationRepository';
-        const filePath = 'NexonAPI_Maplestory.json';
+        const filePath = 'chart.json';
 
 
         const response = await githubApi.get(`/repos/${owner}/${repo}/contents/${filePath}`);
@@ -36,7 +36,7 @@ export const useNexonAPIMaplestoryStore = defineStore('NexonAPIMaplestory', {
 
         // JSON 파싱 후 jsonData에 저장
         this.jsonData = JSON.parse(decodedContent);
-
+        console.log(this.jsonData)
       } catch (error) {
         this.error = '데이터를 가져오는 중 오류가 발생했습니다: ' + error.message;
       } finally {
