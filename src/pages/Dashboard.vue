@@ -5,80 +5,90 @@
         <!-- Dashboard actions -->
         <div class="sm:flex sm:justify-between sm:items-center mb-8">
           <!-- Left: Title -->
-          <div class="mb-4 sm:mb-0">
-          </div>
+          <div class="mb-4 sm:mb-0"></div>
 
           <!-- Right: Actions -->
           <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2 ">
-            <!-- Filter button -->
-            <FilterButton align="right" />
-            <!-- Datepicker built with flatpickr -->
-            <Datepicker align="right" />
+            <!-- Filter button
+            <FilterButton align="right" />-->
+            <!-- Datepicker built with flatpickr
+            <Datepicker align="right" /> -->
           </div>
         </div>
 
         <!-- Cards -->
         <div class="grid grid-cols-12 gap-6">
+          <!-- 로딩 상태 표시 -->
+          <div v-if="loading" class="col-span-full text-center text-lg">Loading...</div>
+          <div v-else-if="error" class="col-span-full text-center text-lg text-red-500">Error loading data!</div>
+
           <!-- Data charts -->
-          <div v-if="jsonData && jsonData.length > 0">
-            <ChartComponent
-              title="Genshin Impact"
-              label="Genshin.json"
-              :dataPoints="jsonData.map(item => item['Genshin.json'])"
-              :labels="jsonData.length > 1 ? jsonData.map(item => item.date) : ['Single Data']"
-              borderColor="rgba(255, 99, 132, 1)"
-              backgroundColor="rgba(255, 99, 132, 0.2)"
-            />
-            <ChartComponent
-              title="Honkia: StarRail"
-              label="StarRail.json"
-              :dataPoints="jsonData.map(item => item['StarRail.json'])"
-              :labels="jsonData.length > 1 ? jsonData.map(item => item.date) : ['Single Data']"
-              borderColor="rgba(75, 192, 192, 1)"
-              backgroundColor="rgba(75, 192, 192, 0.2)"
-            />
-            <ChartComponent
-              title="Maplestory"
-              label="Maplestory.json"
-              :dataPoints="jsonData.map(item => item['Maplestory.json'])"
-              :labels="jsonData.length > 1 ? jsonData.map(item => item.date) : ['Single Data']"
-              borderColor="rgba(153, 102, 255, 1)"
-              backgroundColor="rgba(153, 102, 255, 0.2)"
-            />
-            <ChartComponent
-              title="Final Fantasy XIV"
-              label="FF14.json"
-              :dataPoints="jsonData.map(item => item['FF14.json'])"
-              :labels="jsonData.length > 1 ? jsonData.map(item => item.date) : ['Single Data']"
-              borderColor="rgba(255, 159, 64, 1)"
-              backgroundColor="rgba(255, 159, 64, 0.2)"
-            />
-            <ChartComponent
-              title="RedeemCode: Genshin Impact"
-              label="genshinRedeemCode.json"
-              :dataPoints="jsonData.map(item => item['genshinRedeemCode.json'])"
-              :labels="jsonData.length > 1 ? jsonData.map(item => item.date) : ['Single Data']"
-              borderColor="rgba(54, 162, 235, 1)"
-              backgroundColor="rgba(54, 162, 235, 0.2)"
-            />
-            <ChartComponent
-              title="RedeemCode: StarRail"
-              label="starrailRedeemCode.json"
-              :dataPoints="jsonData.map(item => item['starrailRedeemCode.json'])"
-              :labels="jsonData.length > 1 ? jsonData.map(item => item.date) : ['Single Data']"
-              borderColor="rgba(153, 255, 51, 1)"
-              backgroundColor="rgba(153, 255, 51, 0.2)"
-            />
-            <ChartComponent
-              title="RedeemCode: Zenless"
-              label="zenlessRedeemCode.json"
-              :dataPoints="jsonData.map(item => item['zenlessRedeemCode.json'])"
-              :labels="jsonData.length > 1 ? jsonData.map(item => item.date) : ['Single Data']"
-              borderColor="rgba(255, 99, 71, 1)"
-              backgroundColor="rgba(255, 99, 71, 0.2)"
-            />
-          </div>
-          <DashboardCard01 />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="Genshin Impact"
+            label="Genshin Impact"
+            :dataPoints="jsonData.map(item => item['Genshin.json'])"
+            :labels="generateLabels()"
+            borderColor="rgba(255, 99, 132, 1)"
+            backgroundColor="rgba(255, 99, 132, 0.2)"
+          />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="Honkai: StarRail"
+            label="Honkai: StarRail"
+            :dataPoints="jsonData.map(item => item['StarRail.json'])"
+            :labels="generateLabels()"
+            borderColor="rgba(75, 192, 192, 1)"
+            backgroundColor="rgba(75, 192, 192, 0.2)"
+          />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="Maplestory"
+            label="Maplestory"
+            :dataPoints="jsonData.map(item => item['Maplestory.json'])"
+            :labels="generateLabels()"
+            borderColor="rgba(153, 102, 255, 1)"
+            backgroundColor="rgba(153, 102, 255, 0.2)"
+          />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="Final Fantasy XIV"
+            label="Final Fantasy XIV"
+            :dataPoints="jsonData.map(item => item['FF14.json'])"
+            :labels="generateLabels()"
+            borderColor="rgba(255, 159, 64, 1)"
+            backgroundColor="rgba(255, 159, 64, 0.2)"
+          />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="RedeemCode: Genshin Impact"
+            label="RedeemCode"
+            :dataPoints="jsonData.map(item => item['genshinRedeemCode.json'])"
+            :labels="generateLabels()"
+            borderColor="rgba(54, 162, 235, 1)"
+            backgroundColor="rgba(54, 162, 235, 0.2)"
+          />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="RedeemCode: StarRail"
+            label="RedeemCode"
+            :dataPoints="jsonData.map(item => item['starrailRedeemCode.json'])"
+            :labels="generateLabels()"
+            borderColor="rgba(153, 255, 51, 1)"
+            backgroundColor="rgba(153, 255, 51, 0.2)"
+          />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="RedeemCode: Zenless"
+            label="RedeemCode"
+            :dataPoints="jsonData.map(item => item['zenlessRedeemCode.json'])"
+            :labels="generateLabels()"
+            borderColor="rgba(255, 99, 71, 1)"
+            backgroundColor="rgba(255, 99, 71, 0.2)"
+          />
+
+          <!-- Other Dashboard Cards -->
+           <!--<DashboardCard01 />
           <DashboardCard02 />
           <DashboardCard03 />
           <DashboardCard04 />
@@ -90,7 +100,7 @@
           <DashboardCard10 />
           <DashboardCard11 />
           <DashboardCard12 />
-          <DashboardCard13 />
+          <DashboardCard13 /> -->
         </div>
       </div>
     </main>
@@ -140,11 +150,22 @@ export default {
   setup() {
     const sidebarOpen = ref(false);
     const GithubAPIChartStore = useGithubAPIChartStore();
-
     // Pinia store에서 상태를 computed로 가져옵니다.
     const jsonData = computed(() => GithubAPIChartStore.jsonData);
     const loading = computed(() => GithubAPIChartStore.loading);
     const error = computed(() => GithubAPIChartStore.error);
+
+    const generateLabels = () => {
+      const today = new Date();
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(today.getDate() - 6);
+
+      const labels = [];
+      for (let d = new Date(oneWeekAgo); d <= today; d.setDate(d.getDate() + 1)) {
+        labels.push(d.toISOString().slice(0, 10));
+      }
+      return labels;
+    };
 
     // onMounted 훅을 사용하여 데이터 로딩을 처리합니다.
     onMounted(async () => {
@@ -157,7 +178,6 @@ export default {
       if (jsonData.value && jsonData.value.length === 1) {
         console.log('Single Data');
       }
-
     });
 
     return {
@@ -166,6 +186,7 @@ export default {
       loading,
       error,
       GithubAPIChartStore,
+      generateLabels,
     };
   },
 };

@@ -6,7 +6,7 @@
       </header>
     </div>
     <div class="grow mt-8">
-      <LineChart :data="chartData" :options="chartOptions" :width="600" :height="200" />
+      <LineChart :data="chartData" :options="chartOptions" :width="800" :height="400" />
     </div>
   </div>
 </template>
@@ -15,6 +15,7 @@
 import { ref } from 'vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler } from 'chart.js';
+import dayjs from 'dayjs'; // dayjs 라이브러리 추가
 
 // Chart.js components 등록
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler);
@@ -25,12 +26,12 @@ export default {
     LineChart: Line,
   },
   props: {
-    title: String,  // 차트 제목
-    label: String,  // 지표의 라벨 (예: 'Genshin.json', 'StarRail.json')
-    dataPoints: Array,  // 해당 지표의 데이터 배열
-    labels: Array,  // x축에 표시될 날짜 배열
-    borderColor: String,  // 차트의 선 색상
-    backgroundColor: String,  // 차트의 배경 색상
+    title: String,
+    label: String,
+    dataPoints: Array,
+    labels: Array,
+    borderColor: String,
+    backgroundColor: String,
   },
   setup(props) {
     const chartData = ref({
@@ -41,7 +42,7 @@ export default {
           data: props.dataPoints,
           borderColor: props.borderColor,
           backgroundColor: props.backgroundColor,
-          fill: true,
+          fill: false, // 색칠 제거
           tension: 0.2,
         },
       ],
@@ -60,24 +61,32 @@ export default {
       scales: {
         x: {
           ticks: {
-            display: false,  // x축 날짜를 숨깁니다.
-            autoSkip: false,
-            maxRotation: 90,
-            minRotation: 90,
+            display: true,
+            callback: (value) => {
+              return dayjs(props.labels[value]).format('MM/DD');
+            },
           },
         },
         y: {
           ticks: {
-            display: false,
+            display: true,
+            callback: (value) => {
+              if (value === 0 || value === 1) {
+                return value;
+              }
+              return null; // 0과 1만 보이도록 설정
+            },
           },
           grid: {
             display: false,
           },
+          min: 0,
+          max: 1,
         },
       },
       plugins: {
         legend: {
-          display: false,  // 여기서 legend를 숨깁니다.
+          display: false,
         },
       },
     };
