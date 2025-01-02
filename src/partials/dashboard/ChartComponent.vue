@@ -90,7 +90,6 @@ export default {
         },
       },
     };
-
     return { chartData, chartOptions };
   },
 };
