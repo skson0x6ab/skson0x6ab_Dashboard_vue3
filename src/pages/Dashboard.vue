@@ -175,9 +175,6 @@ export default {
       }
 
       // jsonData가 하나만 있을 때 콘솔에 'Single Data'를 찍어줍니다.
-      if (jsonData.value && jsonData.value.length === 1) {
-        console.log('Single Data');
-      }
     });
 
     return {

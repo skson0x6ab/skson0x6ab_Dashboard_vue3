@@ -36,7 +36,7 @@ export const useGithubAPIChartStore = defineStore('GithubAPIChart', {
 
         // JSON 파싱 후 jsonData에 저장
         this.jsonData = JSON.parse(decodedContent);
-        console.log(this.jsonData)
+
       } catch (error) {
         this.error = '데이터를 가져오는 중 오류가 발생했습니다: ' + error.message;
       } finally {
