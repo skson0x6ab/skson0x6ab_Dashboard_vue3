@@ -38,6 +38,15 @@
           />
           <ChartComponent
             v-if="!loading && !error && jsonData && jsonData.length > 0"
+            title="Zenless Zone Zero"
+            label="Zenless Zone Zero"
+            :dataPoints="mappedData.ZenlessZoneZero"
+            :labels="generateLabels()"
+            borderColor="rgba(75, 192, 192, 1)"
+            backgroundColor="rgba(75, 192, 192, 0.2)"
+          />
+          <ChartComponent
+            v-if="!loading && !error && jsonData && jsonData.length > 0"
             title="Maplestory"
             label="Maplestory"
             :dataPoints="mappedData.maplestory"
@@ -115,7 +124,7 @@ export default {
       yesterday.setDate(today.getDate() - 1); // 어제
 
       const oneWeekAgo = new Date();
-      oneWeekAgo.setDate(today.getDate() - 6); // 7일 전
+      oneWeekAgo.setDate(today.getDate() - 7); // 어제 기준 최근 7일
 
       const labels = [];
       for (let d = new Date(oneWeekAgo); d <= yesterday; d.setDate(d.getDate() + 1)) {
@@ -140,6 +149,13 @@ export default {
             return date.toISOString().slice(0, 10) === label;
           });
           return dataItem ? dataItem['StarRail.json'] : 0;
+        }),
+        ZenlessZoneZero: labels.map(label => {
+          const dataItem = jsonData.value.find(item => {
+            const date = new Date(item.date);
+            return date.toISOString().slice(0, 10) === label;
+          });
+          return dataItem ? dataItem['ZenlessZoneZero.json'] : 0;
         }),
         maplestory: labels.map(label => {
           const dataItem = jsonData.value.find(item => {
