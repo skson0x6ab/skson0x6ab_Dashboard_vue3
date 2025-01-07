@@ -1,21 +1,17 @@
 <template>
   <div class="flex flex-col col-span-full sm:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
     <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center">
-      <h2 class="font-semibold text-gray-800 dark:text-gray-100">Sales Over Time (all stores)</h2>
+      <h2 class="font-semibold text-gray-800 dark:text-gray-100">Genshin JSON Over Time</h2>
     </header>
     <!-- Chart built with Chart.js 3 -->
-    <!-- Change the height attribute to adjust the chart height -->
-    <LineChart :data="chartData" width="595" height="248" />
-  </div>  
+    <LineChart :data="chartData" :width="595" :height="248" />
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { chartAreaGradient } from '../../charts/ChartjsConfig'
-import LineChart from '../../charts/LineChart02.vue'
-
-// Import utilities
+import { reactive, onMounted } from 'vue'
 import { tailwindConfig } from '../../utils/Utils'
+import LineChart from '../../charts/LineChart02.vue'
 
 export default {
   name: 'DashboardCard08',
@@ -23,82 +19,90 @@ export default {
     LineChart,
   },
   setup() {
-    const chartData = ref({
-      labels: [
-        '12-01-2022', '01-01-2023', '02-01-2023',
-        '03-01-2023', '04-01-2023', '05-01-2023',
-        '06-01-2023', '07-01-2023', '08-01-2023',
-        '09-01-2023', '10-01-2023', '11-01-2023',
-        '12-01-2023', '01-01-2024', '02-01-2024',
-        '03-01-2024', '04-01-2024', '05-01-2024',
-        '06-01-2024', '07-01-2024', '08-01-2024',
-        '09-01-2024', '10-01-2024', '11-01-2024',
-        '12-01-2024', '01-01-2025',
-      ],
-      datasets: [
-        // Indigo line
-        {
-          label: 'Current',
-          data: [
-            73, 64, 73, 69, 104, 104, 164,
-            164, 120, 120, 120, 148, 142, 104,
-            122, 110, 104, 152, 166, 233, 268,
-            252, 284, 284, 333, 323,
-          ],
-          borderColor: tailwindConfig().theme.colors.violet[500],
-          fill: false,
-          borderWidth: 2,
-          pointRadius: 0,
-          pointHoverRadius: 3,
+    // 기존 커밋 로그 데이터 (예시)
+    const commitLogs = [
+      {
+        date: '2024-12-26',
+        starrailRedeemCodeJson: 1,
+        GenshinJson: 1,
+        FF14Json: 0,
+        genshinRedeemCodeJson: 0,
+        MaplestoryJson: 0,
+        StarRailJson: 0,
+        zenlessRedeemCodeJson: 0,
+      },
+      {
+        date: '2024-12-25',
+        starrailRedeemCodeJson: 0,
+        GenshinJson: 0,
+        FF14Json: 0,
+        genshinRedeemCodeJson: 1,
+        MaplestoryJson: 0,
+        StarRailJson: 0,
+        zenlessRedeemCodeJson: 0,
+      },
+      // 더 많은 데이터가 있을 수 있음
+    ];
+
+    // 시작 날짜와 끝 날짜 설정
+    const startDate = new Date('2024-12-01');
+    const endDate = new Date();
+
+    // 날짜 라벨 생성 (1일 단위)
+    const labels = [];
+    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+      labels.push(new Date(date).toISOString().split('T')[0]);
+    }
+
+    // GenshinJson만 처리하는 예시
+    const chartData = reactive({
+      labels: labels, // 날짜 라벨
+      datasets: [{
+        label: 'GenshinJson',  // GenshinJson 파일만 라벨로 설정
+        data: [],  // GenshinJson 데이터 처리
+        borderColor: tailwindConfig().theme.colors.violet[500], // 예시 색상
+        fill: false,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 3,
         pointBackgroundColor: tailwindConfig().theme.colors.violet[500],
         pointHoverBackgroundColor: tailwindConfig().theme.colors.violet[500],
         pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,          
+        pointHoverBorderWidth: 0,
         clip: 20,
         tension: 0.2,
-        },
-        // Blue line
-        {
-          label: 'Previous',
-          data: [
-            184, 86, 42, 378, 42, 243, 38,
-            120, 0, 0, 42, 0, 84, 0,
-            276, 0, 124, 42, 124, 88, 88,
-            215, 156, 88, 124, 64,
-          ],
-          borderColor: tailwindConfig().theme.colors.sky[500],
-          fill: false,
-          borderWidth: 2,
-          pointRadius: 0,
-          pointHoverRadius: 3,
-          pointBackgroundColor: tailwindConfig().theme.colors.sky[500],
-          clip: 20,
-          tension: 0.2,
-        },
-        // green line
-        {
-          label: 'Average',
-          data: [
-            122, 170, 192, 86, 102, 124, 115,
-            115, 56, 104, 0, 72, 208, 186,
-            223, 188, 114, 162, 200, 150, 118,
-            118, 76, 122, 230, 268,
-          ],
-          borderColor: tailwindConfig().theme.colors.green[500],
-          fill: false,
-          borderWidth: 2,
-          pointRadius: 0,
-          pointHoverRadius: 3,
-          pointBackgroundColor: tailwindConfig().theme.colors.green[500],
-          clip: 20,
-          tension: 0.2,
-        },
-      ],
-    })
+      }]
+    });
+
+    // 커밋 로그를 기반으로 GenshinJson에 대한 변경 여부 데이터를 생성
+    const processCommitLogs = () => {
+      const processedData = chartData.labels.map(label => {
+        const formattedLabel = label;
+
+        // 커밋 로그에서 해당 날짜와 'GenshinJson' 파일에 대한 변경 여부 확인
+        const fileChangesOnDate = commitLogs.filter(log => {
+          const commitDate = new Date(log.date); // 커밋 날짜 가져오기
+          const commitDateStr = commitDate.toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식으로 변환
+          const isFileChanged = log.GenshinJson === 1; // 'GenshinJson' 파일이 변경되었는지 확인 (1일 경우 변경됨)
+          return commitDateStr === formattedLabel && isFileChanged; // 날짜와 파일 변경 여부 비교
+        });
+
+        // 해당 날짜에 GenshinJson 파일 변경이 있으면 1, 없으면 0
+        return fileChangesOnDate.length > 0 ? 1 : 0;
+      });
+
+      // GenshinJson 데이터 추가
+      chartData.datasets[0].data = processedData;
+    };
+
+    // 커밋 로그 처리
+    onMounted(() => {
+      processCommitLogs();
+    });
 
     return {
       chartData,
-    } 
+    };
   }
 }
 </script>

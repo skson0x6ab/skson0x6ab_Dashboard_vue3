@@ -6,24 +6,24 @@
       </header>
     </div>
     <div class="grow mt-8">
-      <LineChart :data="chartData" :options="chartOptions" :width="800" :height="400" />
+      <BarChart :data="chartData" :options="chartOptions" :width="800" :height="400" />
     </div>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
-import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler } from 'chart.js';
+import { Bar } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import dayjs from 'dayjs'; // dayjs 라이브러리 추가
 
 // Chart.js components 등록
-ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler);
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 export default {
   name: 'ChartComponent',
   components: {
-    LineChart: Line,
+    BarChart: Bar,
   },
   props: {
     title: String,
@@ -42,8 +42,6 @@ export default {
           data: props.dataPoints,
           borderColor: props.borderColor,
           backgroundColor: props.backgroundColor,
-          fill: false, // 색칠 제거
-          tension: 0.2,
         },
       ],
     });
