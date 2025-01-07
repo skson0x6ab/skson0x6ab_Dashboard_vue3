@@ -10,6 +10,7 @@ import GenshinCodeRedeem from './pages/coderedeem/GenshinCodeRedeem.vue'
 import StarRailCodeRedeem from './pages/coderedeem/StarRailCodeRedeem.vue'
 import ZenlessCodeRedeem from './pages/coderedeem/ZenlessCodeRedeem.vue'
 import NexonAPI from './pages/NexonAPI/NexonAPI.vue'
+import TMP from './pages/TMP/TMP.vue'
 
 const routerHistory = createWebHistory()
 
@@ -60,6 +61,10 @@ const router = createRouter({
         {
             path: '/NexonAPI',
             component: NexonAPI
+        },
+        {
+            path: '/TMP',
+            component: TMP
         },
       ]
     },

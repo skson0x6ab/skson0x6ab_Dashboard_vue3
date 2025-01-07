@@ -179,7 +179,7 @@ export default {
           chart.options.plugins.tooltip.borderColor = tooltipBorderColor.light
         }
         chart.update('none')
-      })      
+      })
 
     return {
       canvas,
