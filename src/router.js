@@ -13,7 +13,7 @@ import NexonAPI from './pages/NexonAPI/NexonAPI.vue'
 import TMP from './pages/TMP/TMP.vue'
 import Login from './pages/login/login.vue'
 
-import { getCookie } from './utils/cookies'
+import { getCookie } from './utils/Cookies'
 
 const routerHistory = createWebHistory()
 
