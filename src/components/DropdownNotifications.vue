@@ -197,7 +197,7 @@ export default {
       console.log('logout');
       Cookies.remove('authKey'); // 쿠키 삭제
       isAuthenticated.value = false; // 인증 상태 업데이트
-      router.push('/'); // 홈 페이지로 이동
+      router.push('/'); // 홈 페이지 이동
     };
 
     onMounted(() => {
