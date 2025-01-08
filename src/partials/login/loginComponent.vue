@@ -53,7 +53,7 @@
 <script>
 import { ref } from 'vue';
 import { authenticateUser } from '/src/utils/login.js';
-import { setCookie } from '/src/utils/cookies';
+import { setCookie } from '/src/utils/Cookies';
 
 export default {
   setup() {
