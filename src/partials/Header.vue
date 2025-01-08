@@ -45,12 +45,13 @@
             </button>
             <SearchModal id="search-modal" searchId="search" :modalOpen="searchModalOpen" @open-modal="searchModalOpen = true" @close-modal="searchModalOpen = false" />
           </div> -->
-          <Notifications align="right" />
+          <CPNotifications align="right" />
           <Help align="right" />
           <ThemeToggle />
-          <!-- Divider -->
+          <!-- Divider
+          <UserMenu align="right" />-->
           <hr class="w-px h-6 bg-gray-200 dark:bg-gray-700/60 border-none" />
-          <UserMenu align="right" />
+          <Notifications align="right" />
 
         </div>
 
@@ -64,6 +65,7 @@ import { ref } from 'vue'
 
 import SearchModal from '../components/ModalSearch.vue'
 import Notifications from '../components/DropdownNotifications.vue'
+import CPNotifications from '../components/CPDropdownNotifications.vue'
 import Help from '../components/DropdownHelp.vue'
 import ThemeToggle from '../components/ThemeToggle.vue'
 import UserMenu from '../components/DropdownProfile.vue'
@@ -80,6 +82,7 @@ export default {
     Help,
     ThemeToggle,
     UserMenu,
+    CPNotifications,
   },
   setup() {
     const searchModalOpen = ref(false)
