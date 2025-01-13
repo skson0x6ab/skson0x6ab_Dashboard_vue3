@@ -1,17 +1,17 @@
+<template>
+    <AuthKeyPopup :popupOpen="popupOpen" :isAuthenticated="isAuthenticated" @update:popupOpen="popupOpen = $event" @update:isAuthenticated="isAuthenticated = $event" />
+</template>
+
+
 <script>
 import { ref } from 'vue';
-import loginComponent from '/src/partials/login/loginComponent.vue';
+import AuthKeyPopup from '/src/partials/login/loginPopup.vue';
 
 export default {
-  name: 'loginComponent',
+  name: 'Login',
   components: {
-    loginComponent,
+    AuthKeyPopup
   },
 };
 </script>
 
-<template>
-  <div class="grid">
-    <loginComponent />
-  </div>
-</template>

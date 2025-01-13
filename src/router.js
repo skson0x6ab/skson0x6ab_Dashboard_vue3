@@ -1,21 +1,21 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Layout from './layouts/Layout.vue'
-import Dashboard from './pages/Dashboard.vue'
-import Genshin from './pages/releasenote/Genshin.vue'
-import StarRail from './pages/releasenote/StarRail.vue'
-import ZenlessZoneZero from './pages/releasenote/ZenlessZoneZero.vue'
-import Maplestory from './pages/releasenote/Maplestory.vue'
-import FF14 from './pages/releasenote/FF14.vue'
-import GenshinCodeRedeem from './pages/coderedeem/GenshinCodeRedeem.vue'
-import StarRailCodeRedeem from './pages/coderedeem/StarRailCodeRedeem.vue'
-import ZenlessCodeRedeem from './pages/coderedeem/ZenlessCodeRedeem.vue'
-import NexonAPI from './pages/NexonAPI/NexonAPI.vue'
-import TMP from './pages/TMP/TMP.vue'
-import Login from './pages/login/login.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Layout from './layouts/Layout.vue';
+import Dashboard from './pages/Dashboard.vue';
+import Genshin from './pages/releasenote/Genshin.vue';
+import StarRail from './pages/releasenote/StarRail.vue';
+import ZenlessZoneZero from './pages/releasenote/ZenlessZoneZero.vue';
+import Maplestory from './pages/releasenote/Maplestory.vue';
+import FF14 from './pages/releasenote/FF14.vue';
+import GenshinCodeRedeem from './pages/coderedeem/GenshinCodeRedeem.vue';
+import StarRailCodeRedeem from './pages/coderedeem/StarRailCodeRedeem.vue';
+import ZenlessCodeRedeem from './pages/coderedeem/ZenlessCodeRedeem.vue';
+import NexonAPI from './pages/NexonAPI/NexonAPI.vue';
+import TMP from './pages/TMP/TMP.vue';
+import Login from './pages/login/login.vue'; // 로그인 페이지 추가
 
-import { getCookie } from './utils/Cookies'
+import { getCookie } from './utils/Cookies';
 
-const routerHistory = createWebHistory()
+const routerHistory = createWebHistory();
 
 const router = createRouter({
   history: routerHistory,
@@ -75,31 +75,31 @@ const router = createRouter({
           component: TMP
         },
         {
-          path: '/Login',
-          component: Login
-        },
+          path: '/Login', // 로그인 페이지 경로 추가
+          component: Login,
+          meta: { requiresAuth: true }
+        }
       ]
     },
   ]
-})
+});
 
 router.beforeEach((to, from, next) => {
   const authKey = getCookie('authKey');  // 쿠키에서 인증키 가져오기
 
-  // 로그인 경로에 접근하려는 경우 팝업 띄우기
-  //if (to.path === '/') {
-  //  // 로그인 팝업을 열도록 상태 변경
-  //  if (window.app && window.app.$root) {
-  //    window.app.$root.$emit('openLoginPopup', true);
-  //  }
-  //  next(false);  // 라우트 이동을 취소하고 팝업을 띄움
-  //  return;
-  //}
+  // 로그인 페이지 접근 시 인증된 사용자는 홈으로 리디렉션
+  if (to.path === '/Login' && authKey) {
+    next('/');  // 홈 페이지로 리디렉션
+  }
 
   // 인증이 필요한 페이지인 경우
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  else if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!authKey) {
-      next({ name: 'Dashboard' });  // 인증되지 않았으면 대시보드로 리다이렉트
+      // 인증이 필요하지만 인증되지 않은 상태이면 팝업을 열도록 설정
+      if (window.app && window.app.$root) {
+        window.app.$root.$emit('openLoginPopup', true);
+      }
+      next(false);  // 라우트 이동을 취소하고 팝업을 띄움
     } else {
       next();  // 인증된 상태라면 그대로 진행
     }

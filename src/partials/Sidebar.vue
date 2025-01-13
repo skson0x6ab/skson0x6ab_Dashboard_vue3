@@ -34,13 +34,13 @@
         </router-link>
       </div>
 
-      <!-- Links -->
+<!-- Links -->
       <div class="space-y-8">
         <!-- Pages group -->
         <div>
-          <h3 class="text-xs uppercase text-gray-400 dark:text-gray-500 font-semibold pl-3">
+          <h3 class="text-xs text-gray-400 dark:text-gray-500 font-semibold pl-3">
             <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">•••</span>
-            <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Pages</span>
+            <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Public</span>
           </h3>
           <ul class="mt-3">
 <!-- Dashboard -->
@@ -129,6 +129,14 @@
                 </ul>
               </div>
             </SidebarLinkGroup>
+                      </ul>
+                    </div>
+      <div>
+          <h3 class="text-xs text-gray-400 dark:text-gray-500 font-semibold pl-3">
+            <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">•••</span>
+            <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Auth Required</span>
+          </h3>
+          <ul class="mt-3">
 <!-- RedeemCode  -->
             <router-link to="/GenshinCodeRedeem" custom v-slot="{ href, navigate, isExactActive }">
               <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))]" :class="isExactActive && 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]'">
@@ -165,7 +173,7 @@
         </div>
 <!-- More group -->
         <div>
-          <h3 class="text-xs uppercase text-gray-400 dark:text-gray-500 font-semibold pl-3">
+          <h3 class="text-xs text-gray-400 dark:text-gray-500 font-semibold pl-3">
             <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">•••</span>
             <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">More</span>
           </h3>

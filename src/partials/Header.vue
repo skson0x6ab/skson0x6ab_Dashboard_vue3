@@ -44,8 +44,9 @@
               </svg>
             </button>
             <SearchModal id="search-modal" searchId="search" :modalOpen="searchModalOpen" @open-modal="searchModalOpen = true" @close-modal="searchModalOpen = false" />
-          </div> -->
+          </div>
           <CPNotifications align="right" />
+         -->
           <Help align="right" />
           <ThemeToggle />
           <!-- Divider
