@@ -15,7 +15,7 @@ export const useZenlessCodeRedeemStoreUsed = defineStore('ZenlessCodeRedeemUsed'
 
       try {
         const owner = 'skson0x6ab';
-        const repo = 'DataRepository';
+        const repo = 'skson0x6ab_InformationRepository';
         const filePath = 'zenlessRedeemCodeUsed.json';
 
         const response = await githubApi.get(`/repos/${owner}/${repo}/contents/${filePath}`);
