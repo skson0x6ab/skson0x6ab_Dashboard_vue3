@@ -29,6 +29,8 @@ export default {
     const popupOpen = ref(false); // 팝업 상태
     const isAuthenticated = ref(false); // 인증 상태
 
+    let authCheckInterval;
+
     // 인증 상태 확인 함수
     const checkAuthentication = () => {
       const authKeyCookie = getCookie('authKey');
@@ -42,6 +44,7 @@ export default {
     // 페이지 로드 시 인증 상태 확인
     onMounted(() => {
       checkAuthentication();
+      authCheckInterval = setInterval(checkAuthentication, 1000); // 1초마다 체크
     });
 
     // 인증 상태가 변경되었을 때 처리

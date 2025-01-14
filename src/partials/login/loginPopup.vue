@@ -7,7 +7,7 @@
     leave-from-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div v-show="popupOpen" class="popup-overlay" @click="closePopup">
+    <div v-if="!isAuthenticated && popupOpen" class="popup-overlay" @click="closePopup">
       <div class="popup-content" @click.stop>
         <div class="popup-header">
           <button @click="closePopup" class="close-btn">X</button>
@@ -17,7 +17,7 @@
             Enter your Auth Key
           </div>
           <ul>
-            <li v-if="!isAuthenticated" class="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
+            <li class="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
               <input
                 v-model="authKey"
                 type="text"
@@ -26,16 +26,12 @@
                 @keyup.enter="submitAuthKey"
               />
             </li>
-            <li v-if="!isAuthenticated" class="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
+            <li class="border-b border-gray-200 dark:border-gray-700/60 last:border-0">
               <button class="w-full py-2 px-4 text-white bg-blue-500 rounded-md mt-2" @click="submitAuthKey">
                 Authenticate
               </button>
             </li>
-
-            <li v-if="isAuthenticated" class="text-green-500 text-sm mt-2 px-4">
-              You are authenticated and the auth key is saved in cookie.
-            </li>
-            <li v-else class="text-red-500 text-sm mt-2 px-4">
+            <li class="text-red-500 text-sm mt-2 px-4">
               Please enter the authentication key to authenticate.
             </li>
           </ul>
@@ -46,7 +42,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { authenticateUser } from '/src/utils/login.js'; // 클라이언트용 login.js
 
 export default {
@@ -55,6 +51,13 @@ export default {
   emits: ['update:popupOpen', 'update:isAuthenticated'],
   setup(props, { emit }) {
     const authKey = ref('');
+
+    // 팝업이 열릴 때마다 authKey를 빈 값으로 초기화
+    watch(() => props.popupOpen, (newVal) => {
+      if (newVal) {
+        authKey.value = ''; // 팝업이 열릴 때마다 authKey 초기화
+      }
+    });
 
     const submitAuthKey = async () => {
       if (authKey.value) {
