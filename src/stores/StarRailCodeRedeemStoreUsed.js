@@ -38,7 +38,7 @@ export const useStarRailCodeRedeemStoreUsed = defineStore('StarRailCodeRedeemUse
 
       try {
         const owner = 'skson0x6ab';
-        const repo = 'DataRepository';
+        const repo = 'skson0x6ab_InformationRepository';
         const filePath = 'starrailRedeemCodeUsed.json';
 
         // 기존 JSON 데이터 가져오기

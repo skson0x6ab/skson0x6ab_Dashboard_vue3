@@ -38,7 +38,7 @@ export const useZenlessCodeRedeemStoreUsed = defineStore('ZenlessCodeRedeemUsed'
 
       try {
         const owner = 'skson0x6ab';
-        const repo = 'DataRepository';
+        const repo = 'skson0x6ab_InformationRepository';
         const filePath = 'zenlessRedeemCodeUsed.json';
 
         // 기존 JSON 데이터 가져오기
