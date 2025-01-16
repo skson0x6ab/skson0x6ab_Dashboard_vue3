@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import githubApi from '/src/services/githubApi';
 
-export const useGenshinStore = defineStore('Genshin', {
+export const useCodeRedeemTableStore = defineStore('codeRedeemTable', {
   state: () => ({
     jsonData: null, // 데이터 저장
     loading: false,  // 로딩 상태
@@ -15,8 +15,8 @@ export const useGenshinStore = defineStore('Genshin', {
 
       try {
         const owner = 'skson0x6ab';
-        const repo = 'DataRepository';
-        const filePath = 'Genshin.json';
+        const repo = 'skson0x6ab_InformationRepository';
+        const filePath = 'redeemCodeTable.json';
 
         const response = await githubApi.get(`/repos/${owner}/${repo}/contents/${filePath}`);
 

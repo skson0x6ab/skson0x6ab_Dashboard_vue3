@@ -16,35 +16,22 @@
           <!-- 로딩 상태 표시 -->
           <div v-if="loading" class="col-span-full text-center text-lg">Loading...</div>
           <div v-else-if="error" class="col-span-full text-center text-lg text-red-500">Error loading data!</div>
-
+          <codeRedeemTableComponent/>
           <!-- Data charts -->
-          <ChartComponent
-            v-if="!loading && !error && jsonData && jsonData.length > 0"
-            title="Genshin Impact"
-            label="Genshin Impact"
-            :dataPoints="mappedData.genshin"
-            :labels="generateLabels()"
-            borderColor="rgba(255, 99, 132, 1)"
-            backgroundColor="rgba(255, 99, 132, 0.2)"
-          />
-          <ChartComponent
-            v-if="!loading && !error && jsonData && jsonData.length > 0"
-            title="Honkai: StarRail"
-            label="Honkai: StarRail"
-            :dataPoints="mappedData.starrail"
-            :labels="generateLabels()"
-            borderColor="rgba(75, 192, 192, 1)"
-            backgroundColor="rgba(75, 192, 192, 0.2)"
-          />
-          <ChartComponent
-            v-if="!loading && !error && jsonData && jsonData.length > 0"
-            title="Zenless Zone Zero"
-            label="Zenless Zone Zero"
-            :dataPoints="mappedData.ZenlessZoneZero"
-            :labels="generateLabels()"
-            borderColor="rgba(75, 192, 192, 1)"
-            backgroundColor="rgba(75, 192, 192, 0.2)"
-          />
+            <MultiBarChartComponent
+              v-if="!loading && !error && jsonData && jsonData.length > 0"
+              :title="'Hoyoverse ReleaseNote'"
+              :labels="generateLabels()"
+              :dataPoints1="mappedData.genshin"
+              :dataPoints2="mappedData.starrail"
+              :dataPoints3="mappedData.zenless"
+              :borderColor1="'rgba(255, 99, 132, 1)'"
+              :backgroundColor1="'rgba(255, 99, 132, 0.2)'"
+              :borderColor2="'rgba(54, 162, 235, 1)'"
+              :backgroundColor2="'rgba(54, 162, 235, 0.2)'"
+              :borderColor3="'rgba(75, 192, 192, 1)'"
+              :backgroundColor3="'rgba(75, 192, 192, 0.2)'"
+            />
           <ChartComponent
             v-if="!loading && !error && jsonData && jsonData.length > 0"
             title="Maplestory"
@@ -63,33 +50,6 @@
             borderColor="rgba(255, 159, 64, 1)"
             backgroundColor="rgba(255, 159, 64, 0.2)"
           />
-          <ChartComponent
-            v-if="!loading && !error && jsonData && jsonData.length > 0"
-            title="RedeemCode: Genshin Impact"
-            label="RedeemCode"
-            :dataPoints="mappedData.genshinRedeemCode"
-            :labels="generateLabels()"
-            borderColor="rgba(54, 162, 235, 1)"
-            backgroundColor="rgba(54, 162, 235, 0.2)"
-          />
-          <ChartComponent
-            v-if="!loading && !error && jsonData && jsonData.length > 0"
-            title="RedeemCode: StarRail"
-            label="RedeemCode"
-            :dataPoints="mappedData.starrailRedeemCode"
-            :labels="generateLabels()"
-            borderColor="rgba(153, 255, 51, 1)"
-            backgroundColor="rgba(153, 255, 51, 0.2)"
-          />
-          <ChartComponent
-            v-if="!loading && !error && jsonData && jsonData.length > 0"
-            title="RedeemCode: Zenless"
-            label="RedeemCode"
-            :dataPoints="mappedData.zenlessRedeemCode"
-            :labels="generateLabels()"
-            borderColor="rgba(255, 99, 71, 1)"
-            backgroundColor="rgba(255, 99, 71, 0.2)"
-          />
         </div>
       </div>
     </main>
@@ -100,7 +60,9 @@
 import { ref, computed, onMounted } from 'vue'
 import FilterButton from '../components/DropdownFilter.vue'
 import Datepicker from '../components/Datepicker.vue'
+import MultiBarChartComponent from '../partials/dashboard/MultiBarChartComponent.vue';
 import ChartComponent from '../partials/dashboard/ChartComponent.vue'
+import codeRedeemTableComponent from '../partials/dashboard/codeRedeemTableComponent.vue'
 import { useGithubAPIChartStore } from '/src/stores/GithubAPIChartStore';
 
 export default {
@@ -108,7 +70,9 @@ export default {
   components: {
     FilterButton,
     Datepicker,
-    ChartComponent
+    ChartComponent,
+    codeRedeemTableComponent,
+    MultiBarChartComponent,
   },
   setup() {
     const sidebarOpen = ref(false);
@@ -132,68 +96,33 @@ export default {
       }
       return labels;
     };
+const getMappedData = (key, labels) => {
+  if (!jsonData.value) {
+    return labels.map(() => 0);  // jsonData가 없을 경우 0으로 초기화
+  }
 
-    const mappedData = computed(() => {
-      const labels = generateLabels();
-      return {
-        genshin: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date); // 날짜를 처리하는 필드명 확인 필요
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['Genshin.json'] : 0;
-        }),
-        starrail: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date);
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['StarRail.json'] : 0;
-        }),
-        ZenlessZoneZero: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date);
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['ZenlessZoneZero.json'] : 0;
-        }),
-        maplestory: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date);
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['Maplestory.json'] : 0;
-        }),
-        ff14: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date);
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['FF14.json'] : 0;
-        }),
-        genshinRedeemCode: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date);
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['genshinRedeemCode.json'] : 0;
-        }),
-        starrailRedeemCode: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date);
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['starrailRedeemCode.json'] : 0;
-        }),
-        zenlessRedeemCode: labels.map(label => {
-          const dataItem = jsonData.value.find(item => {
-            const date = new Date(item.date);
-            return date.toISOString().slice(0, 10) === label;
-          });
-          return dataItem ? dataItem['zenlessRedeemCode.json'] : 0;
-        })
-      };
+  return labels.map(label => {
+    const dataItem = jsonData.value.find(item => {
+      const itemDate = new Date(item.date);
+      const itemDateString = itemDate.toISOString().slice(0, 10);  // item.date를 'YYYY-MM-DD' 형식으로 변환
+      return itemDateString === label;  // 날짜 형식이 정확히 일치하는지 비교
     });
+    return dataItem ? dataItem[key] : 0;
+  });
+};
+
+const mappedData = computed(() => {
+  const labels = generateLabels();  // labels는 여기서 정의
+
+  return {
+    genshin: getMappedData('Genshin.json', labels),
+    starrail: getMappedData('StarRail.json', labels),
+    zenless: getMappedData('ZenlessZoneZero.json', labels),
+    maplestory: getMappedData('Maplestory.json', labels),
+    ff14: getMappedData('FF14.json', labels),
+  };
+
+});
 
     // onMounted 훅을 사용하여 데이터 로딩을 처리합니다.
     onMounted(async () => {
